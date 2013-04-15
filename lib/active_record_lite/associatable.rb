@@ -1,4 +1,5 @@
 require 'active_support/inflector'
+require_relative 'has_many_assoc_params'
 
 module Associatable
   def belongs_to(name, params = {})
@@ -21,44 +22,29 @@ module Associatable
 
       query = <<-SQL
         SELECT *
-          FROM #{ other_table_name }
-         WHERE #{ other_table_name }.#{ primary_key } = ?
+          FROM #{other_table_name}
+         WHERE #{other_table_name}.#{primary_key} = ?
       SQL
 
-      row_hash = DBConnection.execute(query, self.send("#{ foreign_key }"))
+      row_hash = DBConnection.execute(query, self.send("#{foreign_key}"))
 
       other_class.parse_all(row_hash).first
     end
   end
 
   def has_many(name, params = {})
+    aps = HasManyAssocParams.new(self, name, params)
+
     define_method(name) do
-      other_class = (if params[:class_name]
-        params[:class_name]
-      else
-        # Do I need to do "to_s" here? Or should I be adjusting elsewhere?
-        "#{name}".singularize.camelize
-      end).constantize
-
-      other_table_name = other_class.table_name
-
-      primary_key = params[:primary_key] ? params[:primary_key] : "id"
-
-      foreign_key = (if params[:foreign_key]
-        params[:foreign_key]
-      else
-        "#{ self.class.underscore }_id"
-      end)
-
       query = <<-SQL
         SELECT *
-          FROM #{ other_table_name }
-         WHERE #{ other_table_name }.#{ foreign_key } = ?
+          FROM #{aps.other_table}
+         WHERE #{aps.other_table}.#{aps.foreign_key} = ?
       SQL
 
-      row_hashes = DBConnection.execute(query, self.send(primary_key))
+      row_hashes = DBConnection.execute(query, self.send(aps.primary_key))
 
-      other_class.parse_all(row_hashes)
+      aps.other_class.parse_all(row_hashes)
     end
   end
 end
