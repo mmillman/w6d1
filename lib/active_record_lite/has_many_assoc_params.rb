@@ -1,4 +1,4 @@
-class HasManyParams
+class HasManyAssocParams
   def initialize(self_class, name, params)
     @self_class = self_class
     @name = name

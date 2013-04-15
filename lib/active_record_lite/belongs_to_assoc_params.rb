@@ -1,4 +1,4 @@
-class BelongsToParams
+class BelongsToAssocParams
   def initialize(self_class, name, params)
     @self_class = self_class
     @name = name
