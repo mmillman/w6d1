@@ -1,5 +1,6 @@
-class HasManyAssocParams
-  def initialize(name, params)
+class BelongsToParams
+  def initialize(self_class, name, params)
+    @self_class = self_class
     @name = name
     @params = params
   end
@@ -8,7 +9,7 @@ class HasManyAssocParams
     (if @params[:class_name]
       @params[:class_name]
     else
-      "#{@name}".singularize.camelize
+      "#{@name}".camelize
     end).constantize
   end
 
@@ -24,8 +25,7 @@ class HasManyAssocParams
     if @params[:foreign_key]
       @params[:foreign_key]
     else
-      p "hissss"
-      "#{self.class.underscore}_id"
+      "#{@name}_id"
     end
   end
 end
