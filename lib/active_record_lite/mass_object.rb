@@ -19,6 +19,11 @@ class MassObject
     nil
   end
 
+  # Why did the assignment say to put this in MassObject?
+  # def self.parse_all(row_hashes)
+  #   row_hashes.map { |row_hash| self.new(row_hash) }
+  # end
+
   def initialize(params)
     params.each do |attr_name, value|
       unless self.class.attributes.include?(attr_name.to_sym)

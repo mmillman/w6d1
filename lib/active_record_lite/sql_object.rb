@@ -1,5 +1,6 @@
 class SQLObject < MassObject
   extend Searchable
+  extend Associatable
 
   def self.set_table_name(name)
     @table_name = name
@@ -9,6 +10,7 @@ class SQLObject < MassObject
     @table_name
   end
 
+  # Why did the assignment say to put this in MassObject?
   def self.parse_all(row_hashes)
     row_hashes.map { |row_hash| self.new(row_hash) }
   end
@@ -31,7 +33,7 @@ class SQLObject < MassObject
        WHERE id = ?
     SQL
 
-    self.parse_all(row_hashes)
+    self.parse_all(row_hashes).first
   end
 
   def attribute_values
