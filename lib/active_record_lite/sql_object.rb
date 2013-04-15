@@ -1,4 +1,6 @@
 class SQLObject < MassObject
+  extend Searchable
+
   def self.set_table_name(name)
     @table_name = name
   end

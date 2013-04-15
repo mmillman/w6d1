@@ -17,3 +17,6 @@ end
 
 p Cat.where(:name => "Breakfast")
 p Human.where(:fname => "Matt")
+
+p Cat.where(:id => 4)
+p Cat.where(:owner_id => 2)
