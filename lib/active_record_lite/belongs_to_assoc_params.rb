@@ -28,4 +28,9 @@ class BelongsToAssocParams
       "#{@name}_id"
     end
   end
+
+  #Implement this:
+  def type
+    :belongs_to
+  end
 end

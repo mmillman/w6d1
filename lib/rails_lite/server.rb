@@ -21,10 +21,11 @@ class MyController < ControllerBase
     when "/redirect"
       redirect_to("http://www.google.com")
     when "/render"
-      content_type = "text/text"
-      body = "Hello, world! You requested #{@req.path} with content:\n" +
-             "#{@req.query["content"]}"
-      render_content(content_type, body)
+      # content_type = "text/text"
+      # body = "Hello, world! You requested #{@req.path} with content:\n" +
+      #        "#{@req.query["content"]}"
+      # render_content(body, content_type)
+      render :show
       # @session.store_session(@res)
       puts "@res.cookies in MyController#go (when '/render'): #{@res.cookies}"
       puts "@session in MyController#go (when '/render'): #{@session.inspect}"
@@ -38,4 +39,3 @@ server.mount_proc('/') do |req, res|
 end
 
 server.start
-
